@@ -17,7 +17,6 @@ Steps:
 1. Install dependencies
 
 ```bash
-cd frontend
 npm install
 ```
 
