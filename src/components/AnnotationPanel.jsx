@@ -4,7 +4,13 @@ import "../styles/annotation.css";
 import { useAuth } from "../context/AuthContext";
 import { Pencil, Trash2 } from "lucide-react";
 
-function AnnotationPanel({ document, annotations, onAddAnnotation, onUpdateAnnotation, onDeleteAnnotation }) {
+function AnnotationPanel({
+  document,
+  annotations,
+  onAddAnnotation,
+  onUpdateAnnotation,
+  onDeleteAnnotation,
+}) {
   const [content, setContent] = useState("");
   const [type, setType] = useState("comment");
   const [loading, setLoading] = useState(false);
@@ -12,7 +18,7 @@ function AnnotationPanel({ document, annotations, onAddAnnotation, onUpdateAnnot
   const [editContent, setEditContent] = useState("");
   const { user } = useAuth();
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  const API_URL = process.env.REACT_APP_API_URL || "/api";
 
   const handleAddAnnotation = async (e) => {
     e.preventDefault();
@@ -67,7 +73,8 @@ function AnnotationPanel({ document, annotations, onAddAnnotation, onUpdateAnnot
   };
 
   const handleDeleteAnnotation = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this annotation?")) return;
+    if (!window.confirm("Are you sure you want to delete this annotation?"))
+      return;
 
     try {
       await axios.delete(`${API_URL}/annotations/${id}`);
@@ -94,7 +101,11 @@ function AnnotationPanel({ document, annotations, onAddAnnotation, onUpdateAnnot
 
           <div className="form-group">
             <label>Add Annotation</label>
-            <textarea value={content} onChange={(e) => setContent(e.target.value)} placeholder="Enter your annotation..." />
+            <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Enter your annotation..."
+            />
           </div>
 
           <button type="submit" className="btn btn-primary" disabled={loading}>
@@ -108,26 +119,46 @@ function AnnotationPanel({ document, annotations, onAddAnnotation, onUpdateAnnot
           <p>No annotations yet</p>
         ) : (
           annotations.map((ann) => (
-            <div key={ann._id} className="annotation-item border p-3 rounded mb-3">
+            <div
+              key={ann._id}
+              className="annotation-item border p-3 rounded mb-3"
+            >
               <p className="text-sm text-gray-700">
                 <strong className="text-gray-900">{ann.user?.name}</strong>
                 {ann.updatedBy ? (
                   <>
                     {" "}
-                    → <span className="text-blue-600 font-medium">{ann.updatedBy?.name}</span>
+                    →{" "}
+                    <span className="text-blue-600 font-medium">
+                      {ann.updatedBy?.name}
+                    </span>
                   </>
                 ) : null}
-                <span className="text-gray-400 ml-2">({new Date(ann.createdAt).toLocaleDateString()})</span>
+                <span className="text-gray-400 ml-2">
+                  ({new Date(ann.createdAt).toLocaleDateString()})
+                </span>
               </p>
 
               {editingId === ann._id ? (
                 <div className="edit-mode mt-2">
-                  <textarea value={editContent} onChange={(e) => setEditContent(e.target.value)} rows={3} className="w-full border p-2 rounded" />
+                  <textarea
+                    value={editContent}
+                    onChange={(e) => setEditContent(e.target.value)}
+                    rows={3}
+                    className="w-full border p-2 rounded"
+                  />
                   <div className="flex gap-2 mt-2">
-                    <button className="p-1 rounded-md w-20 btn-primary" onClick={() => handleSaveEdit(ann._id, user.id)} disabled={loading}>
+                    <button
+                      className="p-1 rounded-md w-20 btn-primary"
+                      onClick={() => handleSaveEdit(ann._id, user.id)}
+                      disabled={loading}
+                    >
                       {loading ? "Saving..." : "Save"}
                     </button>
-                    <button className="p-1 rounded-md w-20 btn-secondary" onClick={handleCancelEdit}>
+                    <button
+                      className="p-1 rounded-md w-20 btn-secondary"
+                      onClick={handleCancelEdit}
+                    >
                       Cancel
                     </button>
                   </div>
@@ -141,15 +172,24 @@ function AnnotationPanel({ document, annotations, onAddAnnotation, onUpdateAnnot
                       const isOwner = user.id === ann.user._id;
                       const isAdmin = user.role === "admin";
 
-                      const canEditOrDelete = (isOwner && user.role !== "viewer") || isAdmin;
+                      const canEditOrDelete =
+                        (isOwner && user.role !== "viewer") || isAdmin;
 
                       return (
                         canEditOrDelete && (
                           <div className="annotation-actions flex justify-end gap-2 mt-2">
-                            <button className="p-2 rounded-lg bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition" title="Edit Annotation" onClick={() => handleEditAnnotation(ann)}>
+                            <button
+                              className="p-2 rounded-lg bg-yellow-100 text-yellow-700 hover:bg-yellow-200 transition"
+                              title="Edit Annotation"
+                              onClick={() => handleEditAnnotation(ann)}
+                            >
                               <Pencil className="w-4 h-4" />
                             </button>
-                            <button className="p-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition" title="Delete Annotation" onClick={() => handleDeleteAnnotation(ann._id)}>
+                            <button
+                              className="p-2 rounded-lg bg-red-100 text-red-700 hover:bg-red-200 transition"
+                              title="Delete Annotation"
+                              onClick={() => handleDeleteAnnotation(ann._id)}
+                            >
                               <Trash2 className="w-4 h-4" />
                             </button>
                           </div>

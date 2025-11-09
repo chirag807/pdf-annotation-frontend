@@ -10,11 +10,13 @@ function DocumentUpload({ onUpload }) {
   const [success, setSuccess] = useState("");
   const [progress, setProgress] = useState(0);
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  const API_URL = process.env.REACT_APP_API_URL || "/api";
 
   const handleFileChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    const validFiles = selectedFiles.filter((f) => f.type === "application/pdf");
+    const validFiles = selectedFiles.filter(
+      (f) => f.type === "application/pdf"
+    );
 
     if (validFiles.length !== selectedFiles.length) {
       setError("Only PDF files are allowed");
@@ -45,13 +47,19 @@ function DocumentUpload({ onUpload }) {
         formData.append("title", title);
         formData.append("file", file);
 
-        const response = await axios.post(`${API_URL}/documents/upload`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-          onUploadProgress: (progressEvent) => {
-            const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-            setProgress(percentCompleted);
-          },
-        });
+        const response = await axios.post(
+          `${API_URL}/documents/upload`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+            onUploadProgress: (progressEvent) => {
+              const percentCompleted = Math.round(
+                (progressEvent.loaded * 100) / progressEvent.total
+              );
+              setProgress(percentCompleted);
+            },
+          }
+        );
 
         return response.data;
       });
@@ -81,15 +89,29 @@ function DocumentUpload({ onUpload }) {
       <form onSubmit={handleSubmit} className="upload-form">
         <div className="form-group">
           <label>Document Title (applies to all files)</label>
-          <input type="text" value={title} className="input-field" onChange={(e) => setTitle(e.target.value)} placeholder="Enter document title..." />
+          <input
+            type="text"
+            value={title}
+            className="input-field"
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter document title..."
+          />
         </div>
 
         <div className="form-group">
           <label>Select PDF Files</label>
           <div className="file-input-wrapper">
-            <input id="file-upload" type="file" accept=".pdf" multiple onChange={handleFileChange} />
+            <input
+              id="file-upload"
+              type="file"
+              accept=".pdf"
+              multiple
+              onChange={handleFileChange}
+            />
             <label htmlFor="file-upload" className="file-upload-label">
-              {files.length > 0 ? `${files.length} file(s) selected` : "Click to select PDF files"}
+              {files.length > 0
+                ? `${files.length} file(s) selected`
+                : "Click to select PDF files"}
             </label>
           </div>
           {files.length > 0 && (
@@ -103,7 +125,10 @@ function DocumentUpload({ onUpload }) {
 
         {loading && (
           <div className="w-full bg-gray-200 rounded-full h-2.5 mb-3 mt-2">
-            <div className="bg-blue-600 h-2.5 rounded-full transition-all" style={{ width: `${progress}%` }}></div>
+            <div
+              className="bg-blue-600 h-2.5 rounded-full transition-all"
+              style={{ width: `${progress}%` }}
+            ></div>
           </div>
         )}
 

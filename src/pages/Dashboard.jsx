@@ -12,7 +12,7 @@ function Dashboard() {
   const [error, setError] = useState("");
   const { user } = useAuth();
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  const API_URL = process.env.REACT_APP_API_URL || "/api";
 
   useEffect(() => {
     fetchDocuments();
@@ -70,7 +70,9 @@ function Dashboard() {
           )}
         </div>
       </main>
-      <footer className=" mt-auto py-6 text-center text-gray-400 text-sm border-t border-gray-200 bg-white">© {new Date().getFullYear()} PDF Annotate. All rights reserved.</footer>
+      <footer className=" mt-auto py-6 text-center text-gray-400 text-sm border-t border-gray-200 bg-white">
+        © {new Date().getFullYear()} PDF Annotate. All rights reserved.
+      </footer>
     </div>
   );
 }

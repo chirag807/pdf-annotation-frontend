@@ -14,7 +14,7 @@ function PdfViewer() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  const API_URL = process.env.REACT_APP_API_URL || "/api";
 
   useEffect(() => {
     // fetchDocument();
@@ -66,7 +66,13 @@ function PdfViewer() {
           <PdfDisplay document={document} />
         </div>
         <div className="annotation-section bg-gradient-to-br from-gray-50 to-blue-100">
-          <AnnotationPanel document={document} annotations={annotations} onAddAnnotation={handleAddAnnotation} onUpdateAnnotation={handleUpdateAnnotation} onDeleteAnnotation={handleDeleteAnnotation} />
+          <AnnotationPanel
+            document={document}
+            annotations={annotations}
+            onAddAnnotation={handleAddAnnotation}
+            onUpdateAnnotation={handleUpdateAnnotation}
+            onDeleteAnnotation={handleDeleteAnnotation}
+          />
         </div>
       </div>
     </div>

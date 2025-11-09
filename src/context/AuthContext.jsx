@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [loading, setLoading] = useState(true);
 
-  const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
+  const API_URL = process.env.REACT_APP_API_URL || "/api";
 
   useEffect(() => {
     if (token) {
@@ -35,7 +35,12 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (email, password, name, userType) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/register`, { email, password, name, userType });
+      const response = await axios.post(`${API_URL}/auth/register`, {
+        email,
+        password,
+        name,
+        userType,
+      });
       setToken(response.data.token);
       setUser(response.data.user);
       localStorage.setItem("token", response.data.token);
@@ -47,7 +52,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+      const response = await axios.post(`${API_URL}/auth/login`, {
+        email,
+        password,
+      });
       setToken(response.data.token);
       setUser(response.data.user);
       localStorage.setItem("token", response.data.token);
@@ -64,5 +72,11 @@ export const AuthProvider = ({ children }) => {
     delete axios.defaults.headers.common["Authorization"];
   };
 
-  return <AuthContext.Provider value={{ user, token, loading, register, login, logout }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{ user, token, loading, register, login, logout }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };

@@ -8,7 +8,11 @@ function PdfDisplay({ document }) {
         <h2 className="underline underline-offset-4">{document.title}</h2>
       </div>
       <div className="pdf-content">
-        <iframe src={`http://localhost:5000/api/documents/${document._id}/file`} title={document.title} className="pdf-iframe" />
+        <iframe
+          src={`/api/documents/${document._id}/file`}
+          title={document.title}
+          className="pdf-iframe"
+        />
       </div>
     </div>
   );
